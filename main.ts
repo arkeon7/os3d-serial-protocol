@@ -1,8 +1,8 @@
 function ShowImage (texte: string) {
-    leds = texte.split("")
+    leds = texte.split(" ")
     for (let y = 0; y <= 4; y++) {
         for (let x = 0; x <= 4; x++) {
-            if (leds[x * y] == "1") {
+            if (leds[x + y * 5] == "1") {
                 led.plot(x, y)
             } else {
                 led.unplot(x, y)
@@ -11,7 +11,7 @@ function ShowImage (texte: string) {
     }
 }
 serial.onDataReceived("matrix", function () {
-    ShowImage(serial.readUntil(serial.delimiters(Delimiters.NewLine)))
+	
 })
 serial.onDataReceived("sound", function () {
     music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
@@ -29,6 +29,7 @@ serial.setBaudRate(BaudRate.BaudRate57600)
 serial.writeLine("Started")
 basic.showString("OS3D")
 basic.showIcon(IconNames.Happy)
+// ShowImage("0 1 0 1 0 0 1 0 1 0 0 1 0 1 0 0 1 0 1 0 0 1 0 1 0")
 basic.forever(function () {
     serial.writeValue("accel.x", input.acceleration(Dimension.X))
     serial.writeValue("accel.y", input.acceleration(Dimension.Y))
