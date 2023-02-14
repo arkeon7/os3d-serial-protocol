@@ -55,11 +55,21 @@ basic.forever(function () {
         serial.writeValue("btn.l", 1)
     } else {
         serial.writeValue("btn.l", 0)
-        if (input.isGesture(Gesture.Shake)) {
-            serial.writeValue("shake", 1)
-        } else {
-            serial.writeValue("shake", 0)
-        }
+    }
+    if (input.isGesture(Gesture.Shake)) {
+        serial.writeValue("shake", 1)
+    } else {
+        serial.writeValue("shake", 0)
+    }
+    if (input.isGesture(Gesture.TiltLeft)) {
+        serial.writeValue("tilt.l", 1)
+    } else {
+        serial.writeValue("tilt.l", 0)
+    }
+    if (input.isGesture(Gesture.TiltRight)) {
+        serial.writeValue("tilt.r", 1)
+    } else {
+        serial.writeValue("tilt.r", 0)
     }
     basic.pause(100)
 })
