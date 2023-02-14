@@ -16,6 +16,9 @@ serial.onDataReceived("matrix", function () {
 serial.onDataReceived("sound", function () {
     music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
 })
+serial.onDataReceived("write", function () {
+    basic.showString(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn)))
+})
 serial.onDataReceived("buzz", function () {
     music.playTone(parseFloat(serial.readLine()), music.beat(BeatFraction.Whole))
 })
