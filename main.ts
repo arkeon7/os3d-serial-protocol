@@ -11,7 +11,7 @@ function ShowImage (texte: string) {
     }
 }
 serial.onDataReceived("matrix", function () {
-	
+    ShowImage(serial.readUntil(serial.delimiters(Delimiters.NewLine)))
 })
 serial.onDataReceived("sound", function () {
     music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
