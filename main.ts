@@ -30,13 +30,15 @@ serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         music.startMelody(music.builtInMelody(Melodies.Prelude), MelodyOptions.Once)
     } else if ("sound" == command) {
         music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
+    } else if ("hello" == command) {
+        serial.writeLine("microbit")
     }
     command = serial.readUntil(serial.delimiters(Delimiters.NewLine))
 })
 let command = ""
-let val = 0
-let ledsBin: number[] = []
 let leds: string[] = []
+let ledsBin: number[] = []
+let val = 0
 input.setAccelerometerRange(AcceleratorRange.TwoG)
 serial.redirectToUSB()
 serial.setBaudRate(BaudRate.BaudRate115200)
