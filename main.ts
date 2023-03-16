@@ -33,21 +33,30 @@ serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     } else if ("hello" == command) {
         serial.writeLine("microbit")
     } else if ("p0" == command) {
+        p0 = 1
         pins.digitalWritePin(DigitalPin.P0, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
     } else if ("p1" == command) {
+        p1 = 1
         pins.digitalWritePin(DigitalPin.P1, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
     } else if ("p2" == command) {
+        p2 = 1
         pins.digitalWritePin(DigitalPin.P2, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
     }
     command = serial.readUntil(serial.delimiters(Delimiters.NewLine))
 })
 let command = ""
 let leds: string[] = []
+let p0 = 0
+let p1 = 0
+let p2 = 0
 let ledsBin: number[] = []
 let val = 0
 input.setAccelerometerRange(AcceleratorRange.TwoG)
 serial.redirectToUSB()
 serial.setBaudRate(BaudRate.BaudRate115200)
+p0 = 0
+p1 = 0
+p2 = 0
 serial.writeLine("Started")
 basic.showString("OS3D")
 music.playTone(440, music.beat(BeatFraction.Half))
@@ -57,7 +66,7 @@ basic.forever(function () {
     serial.writeLine("a" + " " + input.acceleration(Dimension.X) + " " + input.acceleration(Dimension.Y) + " " + input.acceleration(Dimension.Z) + " " + input.acceleration(Dimension.Strength))
     serial.writeLine("r" + " " + input.rotation(Rotation.Pitch) + " " + input.compassHeading() + " " + input.rotation(Rotation.Roll))
     serial.writeLine("s" + " " + input.temperature() + " " + input.lightLevel() + " " + input.soundLevel())
-    serial.writeLine("p" + " " + pins.digitalReadPin(DigitalPin.P0) + " " + pins.digitalReadPin(DigitalPin.P1) + " " + pins.digitalReadPin(DigitalPin.P2))
+    serial.writeLine("p" + " " + ((p0) ? 0 : pins.digitalReadPin(DigitalPin.P0)) + " " + ((p1) ? 0 : pins.digitalReadPin(DigitalPin.P1)) + " " + ((p2) ? 0 : pins.digitalReadPin(DigitalPin.P2)))
     if (input.buttonIsPressed(Button.A)) {
         serial.writeValue("b.A", 1)
     } else {
