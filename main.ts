@@ -20,22 +20,61 @@ function ShowImage (texte: string) {
 }
 input.onSound(DetectedSound.Loud, function () {
     serial.writeLine("c" + " " + input.soundLevel())
-    basic.pause(33)
 })
 serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     command = serial.readUntil(serial.delimiters(Delimiters.SemiColon))
-    if ("write" == command) {
+    if ("w" == command) {
         basic.showString(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn)))
-    } else if ("leds" == command) {
+    } else if ("l" == command) {
         ShowImage(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn)))
-    } else if ("buzzer" == command) {
+    } else if ("b" == command) {
         music.playTone(parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))), music.beat(BeatFraction.Whole))
-    } else if ("music" == command) {
-        music.startMelody(music.builtInMelody(Melodies.Prelude), MelodyOptions.Once)
-    } else if ("sound" == command) {
-        music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
-    } else if ("hello" == command) {
+    } else if ("m" == command) {
+        mval = parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn)))
+        if (mval == 0) {
+            music.startMelody(music.builtInMelody(Melodies.Dadadadum), MelodyOptions.Once)
+        } else if (mval == 1) {
+            music.startMelody(music.builtInMelody(Melodies.Entertainer), MelodyOptions.Once)
+        } else if (mval == 2) {
+            music.startMelody(music.builtInMelody(Melodies.Prelude), MelodyOptions.Once)
+        } else if (mval == 3) {
+            music.startMelody(music.builtInMelody(Melodies.Ode), MelodyOptions.Once)
+        } else if (mval == 4) {
+            music.startMelody(music.builtInMelody(Melodies.Nyan), MelodyOptions.Once)
+        } else if (mval == 5) {
+            music.startMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once)
+        } else if (mval == 6) {
+            music.startMelody(music.builtInMelody(Melodies.Funk), MelodyOptions.Once)
+        } else if (mval == 7) {
+            music.startMelody(music.builtInMelody(Melodies.Blues), MelodyOptions.Once)
+        } else if (mval == 8) {
+            music.startMelody(music.builtInMelody(Melodies.Birthday), MelodyOptions.Once)
+        } else if (mval == 9) {
+            music.startMelody(music.builtInMelody(Melodies.Wedding), MelodyOptions.Once)
+        } else if (mval == 10) {
+            music.startMelody(music.builtInMelody(Melodies.Funeral), MelodyOptions.Once)
+        } else if (mval == 11) {
+            music.startMelody(music.builtInMelody(Melodies.Punchline), MelodyOptions.Once)
+        } else if (mval == 12) {
+            music.startMelody(music.builtInMelody(Melodies.Baddy), MelodyOptions.Once)
+        } else if (mval == 13) {
+            music.startMelody(music.builtInMelody(Melodies.Chase), MelodyOptions.Once)
+        } else if (mval == 14) {
+            music.startMelody(music.builtInMelody(Melodies.BaDing), MelodyOptions.Once)
+        } else if (mval == 15) {
+            music.startMelody(music.builtInMelody(Melodies.Wawawawaa), MelodyOptions.Once)
+        } else if (mval == 16) {
+            music.startMelody(music.builtInMelody(Melodies.JumpUp), MelodyOptions.Once)
+        } else if (mval == 17) {
+            music.startMelody(music.builtInMelody(Melodies.JumpDown), MelodyOptions.Once)
+        } else if (mval == 18) {
+            music.startMelody(music.builtInMelody(Melodies.PowerUp), MelodyOptions.Once)
+        } else if (mval == 19) {
+            music.startMelody(music.builtInMelody(Melodies.PowerDown), MelodyOptions.Once)
+        }
+    } else if ("h" == command) {
         serial.writeLine("microbit")
+        music.playTone(440, music.beat(BeatFraction.Half))
     } else if ("p0" == command) {
         p0 = 1
         pins.digitalWritePin(DigitalPin.P0, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
@@ -48,13 +87,14 @@ serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     }
     command = serial.readUntil(serial.delimiters(Delimiters.NewLine))
 })
+let mval = 0
 let command = ""
 let leds: string[] = []
-let p0 = 0
-let p1 = 0
-let p2 = 0
-let ledsBin: number[] = []
 let val = 0
+let ledsBin: number[] = []
+let p2 = 0
+let p1 = 0
+let p0 = 0
 input.setAccelerometerRange(AcceleratorRange.TwoG)
 serial.redirectToUSB()
 serial.setBaudRate(BaudRate.BaudRate115200)
