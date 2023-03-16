@@ -18,6 +18,10 @@ function ShowImage (texte: string) {
         }
     }
 }
+input.onSound(DetectedSound.Loud, function () {
+    serial.writeLine("c" + " " + input.soundLevel())
+    basic.pause(33)
+})
 serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     command = serial.readUntil(serial.delimiters(Delimiters.SemiColon))
     if ("write" == command) {
