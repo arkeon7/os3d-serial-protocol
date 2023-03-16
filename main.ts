@@ -32,6 +32,12 @@ serial.onDataReceived(serial.delimiters(Delimiters.NewLine), function () {
         music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 200, 600, 255, 0, 150, SoundExpressionEffect.None, InterpolationCurve.Linear), SoundExpressionPlayMode.UntilDone)
     } else if ("hello" == command) {
         serial.writeLine("microbit")
+    } else if ("p0" == command) {
+        pins.digitalWritePin(DigitalPin.P0, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
+    } else if ("p1" == command) {
+        pins.digitalWritePin(DigitalPin.P1, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
+    } else if ("p2" == command) {
+        pins.digitalWritePin(DigitalPin.P2, parseFloat(serial.readUntil(serial.delimiters(Delimiters.CarriageReturn))))
     }
     command = serial.readUntil(serial.delimiters(Delimiters.NewLine))
 })
@@ -49,47 +55,46 @@ music.playTone(880, music.beat(BeatFraction.Half))
 // ShowImage("0 1 0 1 0 0 1 0 1 0 0 1 0 1 0 0 1 0 1 0 0 1 0 1 0")
 basic.forever(function () {
     serial.writeLine("a" + " " + input.acceleration(Dimension.X) + " " + input.acceleration(Dimension.Y) + " " + input.acceleration(Dimension.Z) + " " + input.acceleration(Dimension.Strength))
-    serial.writeLine("r" + " " + input.rotation(Rotation.Pitch) + " " + input.rotation(Rotation.Roll) + " " + input.compassHeading())
+    serial.writeLine("r" + " " + input.rotation(Rotation.Pitch) + " " + input.compassHeading() + " " + input.rotation(Rotation.Roll))
     serial.writeLine("s" + " " + input.temperature() + " " + input.lightLevel() + " " + input.soundLevel())
+    serial.writeLine("p" + " " + pins.digitalReadPin(DigitalPin.P0) + " " + pins.digitalReadPin(DigitalPin.P1) + " " + pins.digitalReadPin(DigitalPin.P2))
     if (input.buttonIsPressed(Button.A)) {
         serial.writeValue("b.A", 1)
     } else {
-        serial.writeValue("btn.A", 0)
+        serial.writeValue("b.A", 0)
     }
     if (input.buttonIsPressed(Button.B)) {
-        serial.writeValue("btn.B", 1)
+        serial.writeValue("b.B", 1)
     } else {
-        serial.writeValue("btn.B", 0)
+        serial.writeValue("b.B", 0)
     }
     if (input.logoIsPressed()) {
-        serial.writeValue("btn.L", 1)
+        serial.writeValue("b.L", 1)
     } else {
-        serial.writeValue("btn.L", 0)
+        serial.writeValue("b.L", 0)
     }
     if (input.isGesture(Gesture.Shake)) {
         serial.writeValue("shake", 1)
     } else {
         serial.writeValue("shake", 0)
     }
-    if (input.isGesture(Gesture.TiltLeft)) {
-        serial.writeValue("d.l", 1)
-    } else {
-        serial.writeValue("d.l", 0)
-    }
-    if (input.isGesture(Gesture.TiltRight)) {
-        serial.writeValue("d.r", 1)
-    } else {
-        serial.writeValue("d.r", 0)
-    }
     if (input.isGesture(Gesture.LogoUp)) {
-        serial.writeValue("d.u", 1)
+        serial.writeValue("d.x", 1)
     } else {
-        serial.writeValue("d.u", 0)
+        if (input.isGesture(Gesture.LogoDown)) {
+            serial.writeValue("d.x", -1)
+        } else {
+            serial.writeValue("d.x", 0)
+        }
     }
-    if (input.isGesture(Gesture.LogoDown)) {
-        serial.writeValue("d.d", 1)
+    if (input.isGesture(Gesture.TiltLeft)) {
+        serial.writeValue("d.y", -1)
     } else {
-        serial.writeValue("d.d", 0)
+        if (input.isGesture(Gesture.TiltRight)) {
+            serial.writeValue("d.y", 1)
+        } else {
+            serial.writeValue("d.y", 0)
+        }
     }
-    basic.pause(100)
+    basic.pause(33)
 })
