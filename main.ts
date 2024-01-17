@@ -139,11 +139,11 @@ let mval = 0
 let param = ""
 let command = ""
 let leds: string[] = []
-let val = 0
-let ledsBin: number[] = []
-let p2 = 0
-let p1 = 0
 let p0 = 0
+let p1 = 0
+let p2 = 0
+let ledsBin: number[] = []
+let val = 0
 input.setAccelerometerRange(AcceleratorRange.TwoG)
 serial.redirectToUSB()
 serial.setBaudRate(BaudRate.BaudRate115200)
